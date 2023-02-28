@@ -4,6 +4,7 @@ Matrix terminal screen saver made in C
 
 ## Config
 Config can be found in `config.h`  
+`OPTBOLD`: Are the characters bold  
 `OPTTIME`: Time between frames  
 `OPTGAP`: Gap between matrix lines  
 `OPTCHANCE`: Chance for a line to spawn after `OPTGAP` frames  

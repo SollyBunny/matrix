@@ -57,7 +57,11 @@ int main() {
 	srand(time(NULL));
 
 	// Term
-	printf("\x1b[?1049h\x1b[?25l\x1b[2J");
+	#ifdef OPTBOLD
+		printf("\x1b[?1049h\x1b[?25l\x1b[1m\x1b[2J");
+	#else
+		printf("\x1b[?1049h\x1b[?25l\x1b[2J");
+	#endif
 	struct termios tcur, tres;
 	tcgetattr(0, &tcur);
 	tcgetattr(0, &tres);
@@ -122,7 +126,11 @@ int main() {
 	l_end:
 
 	tcsetattr(0, TCSANOW, &tres);	
-	printf("\x1b[?25h\x1b[0m\x1b[%u;%uH\n\x1b[?1049l", H, 0);
+	#ifdef OPTBOLD
+		printf("\x1b[22m\x1b[?25h\x1b[0m\x1b[%u;%uH\n\x1b[?1049l", H, 0);
+	#else
+		printf("\x1b[?25h\x1b[0m\x1b[%u;%uH\n\x1b[?1049l", H, 0);
+	#endif
 
 	return 0;
 	

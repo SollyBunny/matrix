@@ -1,4 +1,6 @@
 
+// Are the characters bold  
+#define OPTBOLD
 // Time between frames
 #define OPTTIME 50000
 // Gap between matrix lines
