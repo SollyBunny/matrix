@@ -21,9 +21,10 @@ inline static char randchar(unsigned int n) {
 #define R 255
 #define G 221
 #define B 255
+#define V 50 // Variance
 static unsigned char color[3] = {R, G, B};
 inline static void randcolor() {
-	color[0] = R - (rand() % 50);
-	color[1] = G - (rand() % 50);
-	color[2] = B - (rand() % 50);
+	color[0] = R - (rand() % V);
+	color[1] = G - (rand() % V);
+	color[2] = B - (rand() % V);
 }
