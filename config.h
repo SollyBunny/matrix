@@ -19,7 +19,7 @@ inline static char randchar(unsigned int n) {
 
 // Set color to the color for the matrix line
 #define R 255
-#define G 200
+#define G 221
 #define B 255
 static unsigned char color[3] = {R, G, B};
 inline static void randcolor() {
