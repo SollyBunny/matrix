@@ -48,6 +48,7 @@ typedef struct {
 Line line[OPTBUFSIZE];
 Line *linetail;
 Line *linehead;
+Line *lineend;
 
 int main() {
 
@@ -71,6 +72,7 @@ int main() {
 	// Init ptrs
 	linetail = &line[0];
 	linehead = &line[0];
+	lineend = &line[lenof(line) - 1];
 	
 	// Mainloop
 	while (1) {
@@ -86,9 +88,6 @@ int main() {
 				static int randn;
 				randn = rand();
 				if (randn % 100 < OPTCHANCE) {
-					if (line - linehead + 2 > 1000) { // loopover
-						linehead = line;
-					}
 					linehead->x = x + 1;
 					linehead->l = (randn % (OPTSIZEMAX - OPTSIZEMIN)) + OPTSIZEMIN;
 					linehead->y = 1; // linux terms start at 1 don't ask why
@@ -96,7 +95,7 @@ int main() {
 					linehead->r = color[0];
 					linehead->g = color[1];
 					linehead->b = color[2];
-					if (linehead - line + 2 > lenof(line))
+					if (linehead == lineend)
 						linehead = line;
 					else
 						++linehead;
@@ -107,13 +106,17 @@ int main() {
 			}
 		}
 		static Line *p;
-		for (p = linetail; p < linehead; ++p) {
+		for (p = linetail; p != linehead; ++p) {
+			if (p > lineend) p = line;
 			if (p->y + 1 > p->l)
 				printf("\x1b[%u;%uH ", p->y - p->l, p->x);				
 			if (p->y - 1 < H) {
 				printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar(rand()));
 			} else if (p->y - p->l - 5 > H) {
-				++linetail;
+				if (linetail == lineend) // loop over
+					linetail = line;
+				else
+					++linetail;
 				continue;
 			}
 			p->y += 1;
