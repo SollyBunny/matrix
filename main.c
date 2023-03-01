@@ -106,10 +106,9 @@ int main() {
 			}
 		}
 		static Line *p;
-		for (p = linetail; p != linehead; ++p) {
-			if (p > lineend) p = line;
+		for (p = linetail; p != linehead; p = (p == lineend) ? line : p + 1) {
 			if (p->y + 1 > p->l)
-				printf("\x1b[%u;%uH ", p->y - p->l, p->x);				
+				printf("\x1b[%u;%uH ", p->y - p->l, p->x);
 			if (p->y - 1 < H) {
 				printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar(rand()));
 			} else if (p->y - p->l - 5 > H) {
@@ -121,6 +120,7 @@ int main() {
 			}
 			p->y += 1;
 		}
+		//printf("%ld\n", linehead - linetail);
 		
 		fflush(stdout);
 		usleep(OPTTIME);

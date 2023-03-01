@@ -1,6 +1,6 @@
 # matrix
 Matrix terminal screen saver made in C  
-(Also see [pipes](https://github.com/SollyBunny/pipes"))
+(Also see [pipes](https://github.com/SollyBunny/pipes))
 
 ## Config
 Config can be found in `config.h`  

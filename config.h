@@ -12,7 +12,7 @@
 // Biggest possible matrix line height
 #define OPTSIZEMAX 25
 // Circular buffer size for matrix lines
-#define OPTBUFSIZE 1000
+#define OPTBUFSIZE 500
 
 // Return random char to be used for matrix (n = rand())
 inline static char randchar(unsigned int n) {
