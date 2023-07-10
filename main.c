@@ -44,6 +44,12 @@ typedef struct {
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
+	#ifdef ENDENABLED
+		char endchar;
+		unsigned char endr;
+		unsigned char endg;
+		unsigned char endb;
+	#endif
 } Line;
 Line line[OPTBUFSIZE];
 Line *linetail;
@@ -110,7 +116,16 @@ int main() {
 			if (p->y + 1 > p->l)
 				printf("\x1b[%u;%uH ", p->y - p->l, p->x);
 			if (p->y - 1 < H) {
-				printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar(rand()));
+				#ifdef ENDENABLED
+					if (p->endchar)
+						printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y - 1, p->x, p->endchar);
+					p->endchar = randchar(rand());
+					// TODO implement ENDV
+					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", ENDR, ENDG, ENDB, p->y, p->x, p->endchar);
+					// printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->endr, p->endg, p->endb, p->y, p->x, p->endchar);
+				#else
+					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar(rand()));
+				#endif
 			} else if (p->y - p->l - 5 > H) {
 				if (linetail == lineend) // loop over
 					linetail = line;
@@ -120,8 +135,6 @@ int main() {
 			}
 			p->y += 1;
 		}
-		//printf("%ld\n", linehead - linetail);
-		
 		fflush(stdout);
 		usleep(OPTTIME);
 	}

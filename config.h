@@ -1,5 +1,5 @@
 
-// Are the characters bold  
+// Are the characters bold
 #define OPTBOLD
 // Time between frames
 #define OPTTIME 50000
@@ -18,6 +18,13 @@
 inline static char randchar(unsigned int n) {
 	return n % ('~' - '!') + '!';
 }
+
+// The starts of lines are this color
+#define ENDENABLED
+#define ENDR 200
+#define ENDG 100
+#define ENDB 255
+#define ENDV 50 // Variance
 
 // Set color to the color for the matrix line
 #define R 255
