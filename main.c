@@ -78,6 +78,7 @@ int main() {
 			sscanf(theme_color, "%u;%u;%u", &R, &G, &B);
 		}
 	}
+
 	// Term
 	#ifdef OPTBOLD
 		printf("\x1b[?1049h\x1b[?25l\x1b[1m\x1b[2J");
