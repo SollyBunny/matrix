@@ -1,13 +1,14 @@
 NAME=matrix
 SOURCE=main.c
 CFLAGS=-O4 -s
+PREFIX=/usr/local
 
 build:
 	cc $(SOURCE) -o $(NAME) $(CFLAGS)
 
 install:
-	rm -f "/usr/local/bin/$(NAME)"
-	ln -s "`pwd`/$(NAME)" "/usr/local/bin/$(NAME)"
+	rm -f "$(PREFIX)/$(NAME)"
+	cp "$(NAME)" "$(PREFIX)/bin/$(NAME)"
 
 uninstall:
-	rm -f "/usr/local/bin/$(NAME)"
+	rm -f "$(PREFIX)/bin/$(NAME)"

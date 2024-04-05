@@ -11,6 +11,15 @@
 
 #include "config.h"
 
+int R = DEFAULTR;
+int G = DEFAULTG;
+int B = DEFAULTB;
+
+#ifdef ENDENABLED
+	unsigned char colors[6];
+#else
+	unsigned char colors[3];
+#endif
 unsigned int *col;
 unsigned int colsize = 0;
 
@@ -45,7 +54,6 @@ typedef struct {
 	unsigned char g;
 	unsigned char b;
 	#ifdef ENDENABLED
-		char endchar;
 		unsigned char endr;
 		unsigned char endg;
 		unsigned char endb;
@@ -63,6 +71,13 @@ int main() {
 	signal(SIGWINCH, sigwinch);
 	srand(time(NULL));
 
+	// Check for THEME_COLOR
+	{
+		const char* theme_color;
+		if ((theme_color = getenv("THEME_COLOR"))) {
+			sscanf(theme_color, "%u;%u;%u", &R, &G, &B);
+		}
+	}
 	// Term
 	#ifdef OPTBOLD
 		printf("\x1b[?1049h\x1b[?25l\x1b[1m\x1b[2J");
@@ -97,10 +112,15 @@ int main() {
 					linehead->x = x + 1;
 					linehead->l = (randn % (OPTSIZEMAX - OPTSIZEMIN)) + OPTSIZEMIN;
 					linehead->y = 1; // linux terms start at 1 don't ask why
-					randcolor();
-					linehead->r = color[0];
-					linehead->g = color[1];
-					linehead->b = color[2];
+					randcolor(colors, R, G, B);
+					linehead->r = colors[0];
+					linehead->g = colors[1];
+					linehead->b = colors[2];
+					#ifdef ENDENABLED
+						linehead->endr = colors[3];
+						linehead->endg = colors[4];
+						linehead->endb = colors[5];
+					#endif
 					if (linehead == lineend)
 						linehead = line;
 					else
@@ -117,14 +137,10 @@ int main() {
 				printf("\x1b[%u;%uH ", p->y - p->l, p->x);
 			if (p->y - 1 < H) {
 				#ifdef ENDENABLED
-					if (p->endchar)
-						printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y - 1, p->x, p->endchar);
-					p->endchar = randchar(rand());
-					// TODO implement ENDV
-					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", ENDR, ENDG, ENDB, p->y, p->x, p->endchar);
-					// printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->endr, p->endg, p->endb, p->y, p->x, p->endchar);
+					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y - 1, p->x, randchar());
+					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->endr, p->endg, p->endb, p->y, p->x, randchar());
 				#else
-					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar(rand()));
+					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar());
 				#endif
 			} else if (p->y - p->l - 5 > H) {
 				if (linetail == lineend) // loop over

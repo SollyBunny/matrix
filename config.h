@@ -1,4 +1,6 @@
 
+#include <stdlib.h>
+
 // Are the characters bold
 #define OPTBOLD
 // Time between frames
@@ -14,26 +16,38 @@
 // Circular buffer size for matrix lines
 #define OPTBUFSIZE 500
 
-// Return random char to be used for matrix (n = rand())
-inline static char randchar(unsigned int n) {
-	return n % ('~' - '!') + '!';
+// Return random char to be used for matrix
+inline static char randchar() {
+	return rand() % ('~' - '!') + '!';
 }
 
-// The starts of lines are this color
-#define ENDENABLED
-#define ENDR 200
-#define ENDG 100
-#define ENDB 255
-#define ENDV 50 // Variance
-
 // Set color to the color for the matrix line
-#define R 255
-#define G 221
-#define B 255
+#define DEFAULTR 50
+#define DEFAULTG 200
+#define DEFAULTB 50
 #define V 50 // Variance
-static unsigned char color[3] = {R, G, B};
-inline static void randcolor() {
-	color[0] = R - (rand() % V);
-	color[1] = G - (rand() % V);
-	color[2] = B - (rand() % V);
+#define ENDENABLED // Ends are at the bottom of each line
+#define ENDB -50 // Amount brighter the ends are
+#define ENDV 10 // Variance
+
+inline static int getvariance(int v) {
+	return (rand() % v) - (v / 2);
+}
+inline static unsigned char clampedadd(unsigned char c, int v) {
+	if (v > 0) {
+		if (c > 254 - v) return 255;
+	} else {
+		if (c < v + 1) return 0;
+	}
+	return c + v;
+}
+inline static void randcolor(unsigned char *colors, unsigned char r, unsigned char g, unsigned char b) {
+	colors[0] = clampedadd(r, getvariance(V));
+	colors[1] = clampedadd(g, getvariance(V));
+	colors[2] = clampedadd(b, getvariance(V));
+	#ifdef ENDENABLED
+		colors[3] = clampedadd(colors[0], getvariance(ENDV) + ENDB);
+		colors[4] = clampedadd(colors[1], getvariance(ENDV) + ENDB);
+		colors[5] = clampedadd(colors[2], getvariance(ENDV) + ENDB);
+	#endif
 }

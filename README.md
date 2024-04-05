@@ -11,6 +11,7 @@ Config can be found in `config.h`
 `OPTSIZEMIN`: Smallest possible matrix line height  
 `OPTSIZEMAX`: Biggest possible matrix line height  
 `OPTBUFSIZE`: Circular buffer size for matrix lines  
+You can also set the color using the `THEME_COLOR` environment variable
 
 ## Compiling
 Run `make`
