@@ -7,7 +7,6 @@ build:
 	cc $(SOURCE) -o $(NAME) $(CFLAGS)
 
 install:
-	rm -f "$(PREFIX)/$(NAME)"
 	cp "$(NAME)" "$(PREFIX)/bin/$(NAME)"
 
 uninstall:
