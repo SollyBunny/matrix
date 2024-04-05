@@ -37,7 +37,7 @@ inline static unsigned char clampedadd(unsigned char c, int v) {
 	if (v > 0) {
 		if (c > 254 - v) return 255;
 	} else {
-		if (c < v + 1) return 0;
+		if (c < 1 - v) return 0;
 	}
 	return c + v;
 }

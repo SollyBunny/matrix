@@ -11,9 +11,9 @@
 
 #include "config.h"
 
-int R = DEFAULTR;
-int G = DEFAULTG;
-int B = DEFAULTB;
+unsigned char R = DEFAULTR;
+unsigned char G = DEFAULTG;
+unsigned char B = DEFAULTB;
 
 #ifdef ENDENABLED
 	unsigned char colors[6];
@@ -75,7 +75,7 @@ int main() {
 	{
 		const char* theme_color;
 		if ((theme_color = getenv("THEME_COLOR"))) {
-			sscanf(theme_color, "%u;%u;%u", &R, &G, &B);
+			sscanf(theme_color, "%hhu;%hhu;%hhu", &R, &G, &B);
 		}
 	}
 
@@ -138,10 +138,10 @@ int main() {
 				printf("\x1b[%u;%uH ", p->y - p->l, p->x);
 			if (p->y - 1 < H) {
 				#ifdef ENDENABLED
-					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y - 1, p->x, randchar());
-					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->endr, p->endg, p->endb, p->y, p->x, randchar());
+					printf("\x1b[38;2;%hhu;%hhu;%hhum\x1b[%u;%uH%c", p->r, p->g, p->b, p->y - 1, p->x, randchar());
+					printf("\x1b[38;2;%hhu;%hhu;%hhum\x1b[%u;%uH%c", p->endr, p->endg, p->endb, p->y, p->x, randchar());
 				#else
-					printf("\x1b[38;2;%u;%u;%um\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar());
+					printf("\x1b[38;2;%hhu;%hhu;%hhum\x1b[%u;%uH%c", p->r, p->g, p->b, p->y, p->x, randchar());
 				#endif
 			} else if (p->y - p->l - 5 > H) {
 				if (linetail == lineend) // loop over
