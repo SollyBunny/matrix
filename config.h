@@ -1,7 +1,7 @@
 
 #include <stdlib.h>
 
-// Are the characters bold
+// Whether the characters bold
 #define OPTBOLD
 // Time between frames
 #define OPTTIME 50000
@@ -15,6 +15,8 @@
 #define OPTSIZEMAX 25
 // Circular buffer size for matrix lines
 #define OPTBUFSIZE 500
+// Number of iterations to presimulate  
+#define OPTPRESIM 200
 
 // Return random char to be used for matrix
 inline static char randchar() {

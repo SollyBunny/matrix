@@ -97,14 +97,18 @@ int main() {
 	lineend = &line[lenof(line) - 1];
 	
 	// Mainloop
+	static unsigned int presim = OPTPRESIM;
+	static char c;
 	while (1) {
 
-		static char c;
-		c = sgetchar();
-		switch (c) {
-			case 3: // ctrl-c
-				goto l_end;
+		if (presim == 0) {
+			c = sgetchar();
+			switch (c) {
+				case 3: // ctrl-c
+					goto l_end;
+			}
 		}
+		
 		for (unsigned int x = 0; x < colsize; ++x) {
 			if (col[x] > OPTGAP) {
 				static int randn;
@@ -152,8 +156,14 @@ int main() {
 			}
 			p->y += 1;
 		}
-		fflush(stdout);
-		usleep(OPTTIME);
+
+		if (presim == 0) {
+			fflush(stdout);
+			usleep(OPTTIME);
+		} else {
+			--presim;
+		}
+		
 	}
 
 	l_end:
